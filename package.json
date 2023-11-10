@@ -1,10 +1,10 @@
 {
-  "name": "aie-exporter-scripts",
+  "name": "sheetformer",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "esbuild cli.ts --format=cjs --bundle --outfile=dist/cli --platform=node"
+    "build": "esbuild cli.ts --format=cjs --bundle --outfile=dist/sheetformer --platform=node"
   },
   "keywords": [],
   "author": "",
