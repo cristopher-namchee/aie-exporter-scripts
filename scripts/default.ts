@@ -1,10 +1,10 @@
-import * as excel from 'exceljs';
+import * as excel from "exceljs";
 
-import { OCRResponse } from '../typedef';
+import { OCRResponse } from "../types";
 
 export default async function exportToSheet(
   _: OCRResponse,
-  documentName: string,
+  documentName: string
 ): Promise<Buffer> {
   const workbook = new excel.Workbook();
   const sheet = workbook.addWorksheet(documentName);

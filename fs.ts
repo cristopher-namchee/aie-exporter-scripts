@@ -1,7 +1,7 @@
-import fs from 'node:fs';
-import path from 'node:path';
+import fs from "node:fs";
+import path from "node:path";
 
-import { DirectoryFile, ResultFile } from './typedef';
+import { DirectoryFile, ResultFile } from "./types";
 
 export function isDir(filePath: string): boolean {
   const realPath = path.resolve(process.cwd(), filePath);
@@ -29,7 +29,7 @@ export function getDirectoryContents(dirPath: string): DirectoryFile[] {
 
   for (const file of fileNames) {
     // ignore anything that isn't a JSON
-    if (!file.endsWith('.json')) {
+    if (!file.endsWith(".json")) {
       continue;
     }
 
@@ -42,8 +42,8 @@ export function getDirectoryContents(dirPath: string): DirectoryFile[] {
 }
 
 export function writeFiles(dirPath: string, files: ResultFile[]): void {
-  const jsonPath = path.resolve(process.cwd(), dirPath, 'json');
-  const xlsxPath = path.resolve(process.cwd(), dirPath, 'xlsx');
+  const jsonPath = path.resolve(process.cwd(), dirPath, "json");
+  const xlsxPath = path.resolve(process.cwd(), dirPath, "xlsx");
 
   for (const file of files) {
     fs.writeFileSync(path.resolve(jsonPath, `${file.name}.json`), file.content);
@@ -58,6 +58,6 @@ export function resetDir(dirPath: string): void {
     fs.rmSync(realPath, { recursive: true, force: true });
   }
 
-  fs.mkdirSync(path.resolve(realPath, 'json'), { recursive: true });
-  fs.mkdirSync(path.resolve(realPath, 'xlsx'), { recursive: true });
-} 
+  fs.mkdirSync(path.resolve(realPath, "json"), { recursive: true });
+  fs.mkdirSync(path.resolve(realPath, "xlsx"), { recursive: true });
+}

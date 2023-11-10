@@ -28,7 +28,10 @@ export interface OCRResponse {
   read: OCRRead | OCRRead[];
 }
 
-export type ExportFn = (response: OCRResponse, documentName: string) => Promise<Buffer>;
+export type ExportFn = (
+  response: OCRResponse,
+  documentName: string
+) => Promise<Buffer>;
 
 export interface DirectoryFile {
   name: string;
