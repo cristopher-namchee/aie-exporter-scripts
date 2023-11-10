@@ -366,6 +366,9 @@ export default async function exportToSheet(
 ): Promise<excel.Buffer> {
   const workbook = new excel.Workbook();
 
+  // truncate limit
+  documentName = documentName.slice(0, 31);
+
   const sheet = workbook.addWorksheet(documentName);
   const rows = [["Extraction Result"], [""], ["File Name", documentName], [""]];
 
