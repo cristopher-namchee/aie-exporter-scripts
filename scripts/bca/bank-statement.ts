@@ -1,13 +1,7 @@
 import * as excel from "exceljs";
 
 import { OCRField, OCRRead, OCRResponse } from "../../types";
-
-type Keyword = {
-  [key: string]: {
-    field: string;
-    format?: "string" | "date" | "number";
-  };
-};
+import { Keyword } from "./types";
 
 const keywordNonTableSheetMapping: Keyword = {
   bank_name: { field: "BANK_NAME" },
