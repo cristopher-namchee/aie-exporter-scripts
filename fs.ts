@@ -46,8 +46,16 @@ export function writeFiles(dirPath: string, files: ResultFile[]): void {
   const xlsxPath = path.resolve(process.cwd(), dirPath, "xlsx");
 
   for (const file of files) {
-    fs.writeFileSync(path.resolve(jsonPath, `${file.name}.json`), file.content);
-    fs.writeFileSync(path.resolve(xlsxPath, `${file.name}.xlsx`), file.buffer);
+    const filePath = path.parse(file.name);
+
+    fs.writeFileSync(
+      path.resolve(jsonPath, `${filePath.name}.json`),
+      file.content
+    );
+    fs.writeFileSync(
+      path.resolve(xlsxPath, `${filePath.name}.xlsx`),
+      file.buffer
+    );
   }
 }
 
