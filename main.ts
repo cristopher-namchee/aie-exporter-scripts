@@ -20,7 +20,7 @@ function toDotNotation(str: string): string {
 }
 
 function getTransformerFunction(identifier: string): [ExportFn, boolean] {
-  const objIdentifier = toDotNotation(identifier);
+  const objIdentifier = toDotNotation(identifier ?? "");
   if (transformer[objIdentifier]) {
     return [transformer[objIdentifier], true];
   }
