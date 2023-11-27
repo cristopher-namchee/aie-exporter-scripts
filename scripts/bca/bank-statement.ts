@@ -138,41 +138,44 @@ export default async function exportToSheet(
   const rows = [["Extraction Result"], [""], ["File Name", documentName], [""]];
 
   const read = response.read as OCRRead;
-
-  for (const [key, fieldInfo] of Object.entries(keywordNonTableSheetMapping)) {
-    const value = formatFieldOCR(read[key], fieldInfo.format);
-    rows.push([fieldInfo.field, value]);
-  }
-
-  const transactions = read.transactions as OCRField[];
-  if (transactions && transactions.length > 0) {
-    rows.push(
-      [""],
-      [
-        "TGL_POST",
-        "TGL_EFF",
-        "TRANS_LONG_NAME",
-        "TXN_DEBIT",
-        "TXN_CREDIT",
-        "SIGNED_AMOUNT",
-      ]
-    );
-
-    for (const transaction of transactions) {
-      const transactionRow: string[] = [];
-
-      for (const [key, fieldInfo] of Object.entries(keywordTableMapping)) {
-        const value = formatFieldOCR(transaction[key], fieldInfo.format);
-
-        transactionRow.push(value);
-      }
-
-      rows.push(transactionRow);
+  if (read) {
+    for (const [key, fieldInfo] of Object.entries(
+      keywordNonTableSheetMapping
+    )) {
+      const value = formatFieldOCR(read[key], fieldInfo.format);
+      rows.push([fieldInfo.field, value]);
     }
-  }
 
-  sheet.addRows(rows);
-  beautifySheet(sheet, transactions?.length ?? 0);
+    const transactions = read.transactions as OCRField[];
+    if (transactions && transactions.length > 0) {
+      rows.push(
+        [""],
+        [
+          "TGL_POST",
+          "TGL_EFF",
+          "TRANS_LONG_NAME",
+          "TXN_DEBIT",
+          "TXN_CREDIT",
+          "SIGNED_AMOUNT",
+        ]
+      );
+
+      for (const transaction of transactions) {
+        const transactionRow: string[] = [];
+
+        for (const [key, fieldInfo] of Object.entries(keywordTableMapping)) {
+          const value = formatFieldOCR(transaction[key], fieldInfo.format);
+
+          transactionRow.push(value);
+        }
+
+        rows.push(transactionRow);
+      }
+    }
+
+    sheet.addRows(rows);
+    beautifySheet(sheet, transactions?.length ?? 0);
+  }
 
   const excelBuffer = await workbook.xlsx.writeBuffer();
   return excelBuffer as Buffer;

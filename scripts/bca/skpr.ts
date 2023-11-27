@@ -373,49 +373,50 @@ export default async function exportToSheet(
   const rows = [["Extraction Result"], [""], ["File Name", documentName], [""]];
 
   const read = response.read as OCRRead;
-
-  for (const [key, fieldInfo] of Object.entries(keywordNonTableMapping)) {
-    const value = formatFieldOCR(read[fieldInfo.field], fieldInfo);
-    rows.push([key, value]);
-  }
-
-  const [table, accounts, policies] = fillOCRTableDataToSheet(
-    read.bank_account_details as OCRField[],
-    read.policy_details as OCRField[]
-  );
-
-  if (table) {
-    rows.push([""], ...table);
-  }
-
-  sheet.addRows(rows);
-  beautifySheet(sheet);
-
-  applyBorder(
-    sheet,
-    {
-      start: 51,
-      end: 51 + accounts,
-    },
-    {
-      start: 1,
-      end: 2,
+  if (read) {
+    for (const [key, fieldInfo] of Object.entries(keywordNonTableMapping)) {
+      const value = formatFieldOCR(read[fieldInfo.field], fieldInfo);
+      rows.push([key, value]);
     }
-  );
 
-  applyBorder(
-    sheet,
-    {
-      start: 51,
-      end: 51 + policies,
-    },
-    {
-      start: 4,
-      end: 6,
+    const [table, accounts, policies] = fillOCRTableDataToSheet(
+      read.bank_account_details as OCRField[],
+      read.policy_details as OCRField[]
+    );
+
+    if (table) {
+      rows.push([""], ...table);
     }
-  );
 
-  beautifyColumn(sheet);
+    sheet.addRows(rows);
+    beautifySheet(sheet);
+
+    applyBorder(
+      sheet,
+      {
+        start: 51,
+        end: 51 + accounts,
+      },
+      {
+        start: 1,
+        end: 2,
+      }
+    );
+
+    applyBorder(
+      sheet,
+      {
+        start: 51,
+        end: 51 + policies,
+      },
+      {
+        start: 4,
+        end: 6,
+      }
+    );
+
+    beautifyColumn(sheet);
+  }
 
   return workbook.xlsx.writeBuffer();
 }
