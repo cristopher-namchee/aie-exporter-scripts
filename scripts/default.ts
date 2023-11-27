@@ -14,15 +14,18 @@ export default async function exportToSheet(
 
   const rows: string[][] = [];
   const read = response.read;
-  if (!Array.isArray(read)) {
-    for (const [key, value] of Object.entries(read)) {
-      const val = value as OCRField;
 
-      rows.push([key, JSON.stringify(value)]);
+  if (read) {
+    if (!Array.isArray(read)) {
+      for (const [key, value] of Object.entries(read)) {
+        const val = value as OCRField;
+
+        rows.push([key, JSON.stringify(value)]);
+      }
     }
-  }
 
-  sheet.addRows(rows);
+    sheet.addRows(rows);
+  }
 
   const excelBuffer = await workbook.xlsx.writeBuffer();
   return excelBuffer as Buffer;
