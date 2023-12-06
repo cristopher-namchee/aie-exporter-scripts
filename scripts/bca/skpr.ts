@@ -133,47 +133,34 @@ const keywordTablePolicyMapping: Keyword = {
 function formatAsDate(
   ocrText: string,
   segment: string | null = null,
-  expected_length: number | null = null
-): string {
-  const dateParts = ocrText.split("-");
+  expected_length: number | null = null,
+): string | null {
+  const dateParts = ocrText.split('-');
 
-  if (dateParts.length === 1) {
-    const day = String(parseInt(dateParts[0], 10)).padStart(2, "0");
-    return segment === null || segment === "full" || segment === "date"
-      ? day
-      : "";
-  } else if (dateParts.length === 2) {
-    const month = String(parseInt(dateParts[0], 10)).padStart(2, "0");
-    const day = String(parseInt(dateParts[1], 10)).padStart(2, "0");
-
-    if (segment === "date") {
-      return day;
-    } else if (segment === "month") {
-      return month;
-    }
-
-    return segment === null || segment === "full" ? `${day}/${month}` : "";
-  } else if (dateParts.length === 3) {
+  if (!isNaN(Date.parse(ocrText))) {
     const date = new Date(ocrText);
-    const day = String(date.getDate()).padStart(2, "0");
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const year = String(date.getFullYear());
-
-    if (segment === "date") {
-      return day;
-    } else if (segment === "month") {
-      return month;
-    } else if (segment === "year") {
-      return expected_length === null || expected_length >= 4
-        ? year
-        : year.slice(-expected_length);
-    }
-    return segment === null || segment === "full"
-      ? `${day}/${month}/${year}`
-      : "";
+    dateParts[0] = date.getDate().toString();
+    dateParts[1] = (date.getMonth() + 1).toString();
+    dateParts[2] = date.getFullYear().toString();
   }
 
-  return "";
+  for (let idx = 0; idx < dateParts.length; idx++) {    
+    dateParts[idx] = String(parseInt(dateParts[idx], 10)).padStart(2, '0');
+  }
+
+  const returnMapper = {
+    date: dateParts?.[0],
+    month: dateParts?.[1],
+    year: !expected_length || expected_length >= 4 || !dateParts?.[2]
+      ? dateParts?.[2]
+      : dateParts?.[2].slice(-expected_length),
+    full: dateParts.filter(Boolean).join('/'),
+  };
+
+  const segmentKey = segment ?? 'full';
+  const returnValue = segmentKey in returnMapper ? returnMapper[segmentKey] : null; 
+
+  return [undefined, 'NaN'].includes(returnValue) ? null : returnValue;
 }
 
 function formatAsString(
