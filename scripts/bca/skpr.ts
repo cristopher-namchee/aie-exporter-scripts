@@ -415,6 +415,11 @@ export default async function exportToSheet(
       }
     );
 
+    if (accounts) {
+      sheet.getCell('B31').value = '';
+      sheet.getCell('B33').value = '';
+    }
+
     beautifyColumn(sheet);
   }
 
