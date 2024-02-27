@@ -133,9 +133,9 @@ const keywordTablePolicyMapping: Keyword = {
 function formatAsDate(
   ocrText: string,
   segment: string | null = null,
-  expected_length: number | null = null,
+  expected_length: number | null = null
 ): string | null {
-  const dateParts = ocrText.split('-');
+  const dateParts = ocrText.split("-");
 
   if (!isNaN(Date.parse(ocrText))) {
     const date = new Date(ocrText);
@@ -144,23 +144,25 @@ function formatAsDate(
     dateParts[2] = date.getFullYear().toString();
   }
 
-  for (let idx = 0; idx < dateParts.length; idx++) {    
-    dateParts[idx] = String(parseInt(dateParts[idx], 10)).padStart(2, '0');
+  for (let idx = 0; idx < dateParts.length; idx++) {
+    dateParts[idx] = String(parseInt(dateParts[idx], 10)).padStart(2, "0");
   }
 
   const returnMapper = {
     date: dateParts?.[0],
     month: dateParts?.[1],
-    year: !expected_length || expected_length >= 4 || !dateParts?.[2]
-      ? dateParts?.[2]
-      : dateParts?.[2].slice(-expected_length),
-    full: dateParts.filter(Boolean).join('/'),
+    year:
+      !expected_length || expected_length >= 4 || !dateParts?.[2]
+        ? dateParts?.[2]
+        : dateParts?.[2].slice(-expected_length),
+    full: dateParts.filter(Boolean).join("/"),
   };
 
-  const segmentKey = segment ?? 'full';
-  const returnValue = segmentKey in returnMapper ? returnMapper[segmentKey] : null; 
+  const segmentKey = segment ?? "full";
+  const returnValue =
+    segmentKey in returnMapper ? returnMapper[segmentKey] : null;
 
-  return [undefined, 'NaN'].includes(returnValue) ? null : returnValue;
+  return [undefined, "NaN"].includes(returnValue) ? null : returnValue;
 }
 
 function formatAsString(
@@ -347,6 +349,25 @@ function beautifyColumn(sheet: excel.Worksheet) {
   });
 }
 
+function handleLifetimeValidityPeriod(rows: string[][], read: OCRRead) {
+  const validityDate = rows.findIndex(
+    (row) => row[0] === "TANGGAL_MASA_BERLAKU"
+  );
+  const validityMonth = rows.findIndex(
+    (row) => row[0] === "BULAN_MASA_BERLAKU"
+  );
+  const validityYear = rows.findIndex((row) => row[0] === "TAHUN_MASA_BERLAKU");
+  const period = read.validity_period
+    ? ((read.validity_period as OCRField).value as string)
+    : "";
+
+  if (period.toLowerCase() === "seumur hidup") {
+    rows[validityDate][1] = "Seumur Hidup";
+    rows[validityMonth][1] = "";
+    rows[validityYear][1] = "";
+  }
+}
+
 export default async function exportToSheet(
   response: OCRResponse,
   documentName: string
@@ -374,6 +395,8 @@ export default async function exportToSheet(
     if (table) {
       rows.push([""], ...table);
     }
+
+    handleLifetimeValidityPeriod(rows, read);
 
     sheet.addRows(rows);
     beautifySheet(sheet);
@@ -403,8 +426,8 @@ export default async function exportToSheet(
     );
 
     if (accounts) {
-      sheet.getCell('B31').value = '';
-      sheet.getCell('B33').value = '';
+      sheet.getCell("B31").value = "";
+      sheet.getCell("B33").value = "";
     }
 
     beautifyColumn(sheet);
