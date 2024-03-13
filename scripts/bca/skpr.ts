@@ -56,25 +56,25 @@ const keywordNonTableMapping: Keyword = {
   KODE_AREA_TELEPON_KANTOR: {
     field: "office_phone",
     format: "string",
-    delimiter: " ",
+    delimiter: /[ \-]/,
     segment: 0,
   },
   TELEPON_KANTOR: {
     field: "office_phone",
     format: "string",
-    delimiter: " ",
+    delimiter: /[ \-]/,
     segment: 1,
   },
   KODE_AREA_TELEPON_RUMAH: {
     field: "home_phone",
     format: "string",
-    delimiter: " ",
+    delimiter: /[ \-]/,
     segment: 0,
   },
   TELEPON_RUMAH: {
     field: "home_phone",
     format: "string",
-    delimiter: " ",
+    delimiter: /[ \-]/,
     segment: 1,
   },
   NO_HP_1: { field: "mobile_phone_number_1" },
@@ -172,7 +172,7 @@ function formatAsString(
   expected_length?: number,
   padding_char?: string
 ): string {
-  if (delimiter && segment) {
+  if (delimiter !== undefined && segment !== undefined) {
     const parts = ocrText.split(delimiter);
 
     ocrText =
