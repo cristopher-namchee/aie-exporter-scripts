@@ -3,7 +3,7 @@ name: Build and include the binary on release
 on:
   push:
     branches:
-      - master
+      - main
   workflow_dispatch:
 
 jobs:
