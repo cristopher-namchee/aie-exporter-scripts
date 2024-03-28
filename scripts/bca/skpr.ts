@@ -1,12 +1,12 @@
 import * as excel from "exceljs";
 
-import {OCRField, OCRRead, OCRResponse} from "../../types";
-import {Keyword} from "./types";
+import { OCRField, OCRRead, OCRResponse } from "../../types";
+import { Keyword } from "./types";
 
 const keywordNonTableMapping: Keyword = {
-  JENIS_PENGAJUAN: {field: "debit_account_request_type"},
-  NAMA_LENGKAP: {field: "complete_name"},
-  NO_KTP: {field: "id_card_number"},
+  JENIS_PENGAJUAN: { field: "debit_account_request_type" },
+  NAMA_LENGKAP: { field: "complete_name" },
+  NO_KTP: { field: "id_card_number" },
   TANGGAL_MASA_BERLAKU: {
     field: "validity_period",
     format: "date",
@@ -25,10 +25,10 @@ const keywordNonTableMapping: Keyword = {
     segment: "year",
     expected_length: 2,
   },
-  BERTINDAK_SEBAGAI: {field: "act_for"},
-  BERTINDAK_SEBAGAI_NASABAH_BADAN_JABATAN: {field: "position"},
-  BERTINDAK_SEBAGAI_NASABAH_BADAN_NAMA_PT: {field: "company_name"},
-  ALAMAT: {field: "address"},
+  BERTINDAK_SEBAGAI: { field: "act_for" },
+  BERTINDAK_SEBAGAI_NASABAH_BADAN_JABATAN: { field: "position" },
+  BERTINDAK_SEBAGAI_NASABAH_BADAN_NAMA_PT: { field: "company_name" },
+  ALAMAT: { field: "address" },
   RT: {
     field: "rt_rw",
     format: "string",
@@ -45,14 +45,14 @@ const keywordNonTableMapping: Keyword = {
     padding_char: "0",
     expected_length: 3,
   },
-  KELURAHAN: {field: "district"},
-  KOTA: {field: "city"},
-  KODE_POS: {field: "zip_code"},
-  PROVINSI: {field: "province"},
-  KUASA_UNTUK_NAMA: {field: "attorney_in_fact_name"},
-  KUASA_UNTUK_ALAMAT: {field: "attorney_in_fact_address"},
-  KUASA_UNTUK_NO_KTP_SIM_PASPOR: {field: "attorney_in_fact_id_card_number"},
-  KUASA_UNTUK_KODE_PERUSAHAAN: {field: "attorney_in_fact_company_code"},
+  KELURAHAN: { field: "district" },
+  KOTA: { field: "city" },
+  KODE_POS: { field: "zip_code" },
+  PROVINSI: { field: "province" },
+  KUASA_UNTUK_NAMA: { field: "attorney_in_fact_name" },
+  KUASA_UNTUK_ALAMAT: { field: "attorney_in_fact_address" },
+  KUASA_UNTUK_NO_KTP_SIM_PASPOR: { field: "attorney_in_fact_id_card_number" },
+  KUASA_UNTUK_KODE_PERUSAHAAN: { field: "attorney_in_fact_company_code" },
   KODE_AREA_TELEPON_KANTOR: {
     field: "office_phone",
     format: "string",
@@ -77,24 +77,24 @@ const keywordNonTableMapping: Keyword = {
     delimiter: /[ \-]/,
     segment: 1,
   },
-  NO_HP_1: {field: "mobile_phone_number_1"},
-  NO_HP_2: {field: "mobile_phone_number_2"},
-  NOMOR_REKENING: {field: "bank_account_number"},
-  NAMA_BANK: {field: "bank_name"},
-  NAMA_PEMILIK_REKENING: {field: "bank_account_owner_name"},
-  JENIS_REKENING: {field: "account_type"},
-  EMAIL: {field: "email_address"},
-  MATA_UANG_REKENING: {field: "account_currency"},
-  MATA_UANG_REKENING_LAINNYA: {field: "account_other_currency"},
-  MATA_UANG_POLIS: {field: "policy_currency"},
-  MATA_UANG_POLIS_LAINNYA: {field: "policy_other_currency"},
-  NO_SPA_POLIS_INVOICE: {field: "policy_number"},
-  NAMA_PEMEGANG_POLIS: {field: "policyholder_name"},
-  HUB_DG_PEMEGANG_POLIS: {field: "relationship_with_policyholder"},
+  NO_HP_1: { field: "mobile_phone_number_1" },
+  NO_HP_2: { field: "mobile_phone_number_2" },
+  NOMOR_REKENING: { field: "bank_account_number" },
+  NAMA_BANK: { field: "bank_name" },
+  NAMA_PEMILIK_REKENING: { field: "bank_account_owner_name" },
+  JENIS_REKENING: { field: "account_type" },
+  EMAIL: { field: "email_address" },
+  MATA_UANG_REKENING: { field: "account_currency" },
+  MATA_UANG_REKENING_LAINNYA: { field: "account_other_currency" },
+  MATA_UANG_POLIS: { field: "policy_currency" },
+  MATA_UANG_POLIS_LAINNYA: { field: "policy_other_currency" },
+  NO_SPA_POLIS_INVOICE: { field: "policy_number" },
+  NAMA_PEMEGANG_POLIS: { field: "policyholder_name" },
+  HUB_DG_PEMEGANG_POLIS: { field: "relationship_with_policyholder" },
   HUB_DG_PEMEGANG_POLIS_LAINNYA: {
     field: "other_relationship_with_policyholder",
   },
-  TEMPAT_PENANDATANGANAN: {field: "signing_location"},
+  TEMPAT_PENANDATANGANAN: { field: "signing_location" },
   TANGGAL_PENANDATANGANAN: {
     field: "signing_date",
     format: "date",
@@ -113,18 +113,18 @@ const keywordNonTableMapping: Keyword = {
     segment: "year",
     expected_length: 4,
   },
-  NAMA_PEMBERI_KUASA_AUTOFILLED: {field: "complete_name"},
-  NAMA_PEMEGANG_POLIS_AUTOFILLED: {field: "policyholder_name"},
+  NAMA_PEMBERI_KUASA_AUTOFILLED: { field: "complete_name" },
+  NAMA_PEMEGANG_POLIS_AUTOFILLED: { field: "policyholder_name" },
 };
 
 const keywordTableAccountMapping: Keyword = {
-  NOMOR_REKENING: {field: "bank_account_number"},
-  NAMA_PEMILIK_REKENING: {field: "bank_account_owner_name"},
+  NOMOR_REKENING: { field: "bank_account_number" },
+  NAMA_PEMILIK_REKENING: { field: "bank_account_owner_name" },
 };
 
 const keywordTablePolicyMapping: Keyword = {
-  NOMOR_POLIS: {field: "policy_number"},
-  NAMA_PEMEGANG_POLIS: {field: "policyholder_name"},
+  NOMOR_POLIS: { field: "policy_number" },
+  NAMA_PEMEGANG_POLIS: { field: "policyholder_name" },
   HUB_PEMILIK_REKENING_DAN_PEMEGANG_POLIS: {
     field: "other_relationship_with_policyholder",
   },
@@ -140,9 +140,25 @@ function formatAsDate(
 
   if (!isNaN(Date.parse(ocrText))) {
     const date = new Date(ocrText);
-    dateParts[0] = (dateSplit.length === 3 && dateSplit[2].length === 2) || (dateSplit.length === 2 && dateSplit[0].length == 2 && dateSplit[1].length === 2) ? date.getDate().toString() : null;
-    dateParts[1] = (dateSplit.length === 3 && dateSplit[1].length === 2) || (dateSplit.length === 2 && dateSplit[0].length == 4 && dateSplit[1].length == 2) || (dateSplit.length === 2 && dateSplit[0].length == 2) ? (date.getMonth() + 1).toString() : null;
-    dateParts[2] = (dateSplit.length >= 1 && dateSplit[0].length === 4) ? date.getFullYear().toString() : null;
+    dateParts[0] =
+      (dateSplit.length === 3 && dateSplit[2].length === 2) ||
+      (dateSplit.length === 2 &&
+        dateSplit[0].length == 2 &&
+        dateSplit[1].length === 2)
+        ? date.getDate().toString()
+        : null;
+    dateParts[1] =
+      (dateSplit.length === 3 && dateSplit[1].length === 2) ||
+      (dateSplit.length === 2 &&
+        dateSplit[0].length == 4 &&
+        dateSplit[1].length == 2) ||
+      (dateSplit.length === 2 && dateSplit[0].length == 2)
+        ? (date.getMonth() + 1).toString()
+        : null;
+    dateParts[2] =
+      dateSplit.length >= 1 && dateSplit[0].length === 4
+        ? date.getFullYear().toString()
+        : null;
   } else {
     dateParts = dateSplit;
   }
@@ -154,12 +170,16 @@ function formatAsDate(
   const returnMapper = {
     date: dateParts?.[0],
     month: dateParts?.[1],
-    year: !expected_length || expected_length >= 4 || !dateParts?.[2] ? dateParts?.[2] : dateParts?.[2].slice(-expected_length),
+    year:
+      !expected_length || expected_length >= 4 || !dateParts?.[2]
+        ? dateParts?.[2]
+        : dateParts?.[2].slice(-expected_length),
     full: dateParts.filter(Boolean).join("/"),
   };
 
   const segmentKey = segment ?? "full";
-  const returnValue = segmentKey in returnMapper ? returnMapper[segmentKey] : null;
+  const returnValue =
+    segmentKey in returnMapper ? returnMapper[segmentKey] : null;
 
   return [undefined, "NaN"].includes(returnValue) ? null : returnValue;
 }
@@ -202,10 +222,10 @@ function padString(
 }
 
 function formatFieldOCR(ocrFieldObject, mappingData): string {
-  const {value} = ocrFieldObject ?? {};
+  const { value } = ocrFieldObject ?? {};
 
-  const {format, delimiter, segment, expected_length, padding_char} =
-  mappingData ?? {};
+  const { format, delimiter, segment, expected_length, padding_char } =
+    mappingData ?? {};
 
   let ocrText = [null, undefined, ""].includes(value) ? null : value;
   if (ocrText !== null && format === "number") {
